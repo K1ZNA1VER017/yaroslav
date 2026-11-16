@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#174E40"/>
+      <stop offset="100%" stop-color="#0D251F"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="16" y1="14" x2="48" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E5C784"/>
+      <stop offset="55%" stop-color="#C3984B"/>
+      <stop offset="100%" stop-color="#A67A32"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#bgGrad)"/>
+  <rect x="6" y="6" width="52" height="52" rx="14" stroke="url(#goldGrad)" stroke-opacity="0.45" stroke-width="1.2"/>
+  <!-- Architectural hotel gable roof -->
+  <path d="M16 30.5L32 18L48 30.5" stroke="url(#goldGrad)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Pillars and boutique arch doorway -->
+  <path d="M21 28.5V45H43V28.5" stroke="#F6F3EC" stroke-opacity="0.92" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M28 45V36.8C28 34.4 29.8 32.6 32 32.6C34.2 32.6 36 34.4 36 36.8V45" stroke="url(#goldGrad)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Star accent above roof -->
+  <path d="M32 10.8L33.1 13.4L35.7 14.5L33.1 15.6L32 18.2L30.9 15.6L28.3 14.5L30.9 13.4L32 10.8Z" fill="url(#goldGrad)"/>
+  <!-- Baseline -->
+  <path d="M17 45H47" stroke="url(#goldGrad)" stroke-opacity="0.7" stroke-width="1.6" stroke-linecap="round"/>
+</svg>
