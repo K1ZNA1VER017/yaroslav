@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Гостиница.нет — онлайн-бронирование номеров бутик-отеля: реальные фотографии, честная цена без комиссий, завтрак включён и подтверждение за час.">
+  <title>Гостиница.нет — бутик-отель и онлайн-бронирование номеров</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/brand-mark.svg">
+
+  <!-- Editorial Typography (Cyrillic) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Modular Design System -->
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
+  <link rel="stylesheet" href="assets/css/modals.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+
+  <!-- APP_BOOTSTRAP -->
+</head>
+<body>
+
+<!-- ==================== ШАПКА ==================== -->
+<header class="topbar" id="topbar">
+  <div class="wrap">
+    <div class="nav">
+      <button class="brand" type="button" onclick="HotelApp.Router.go('home')" title="На главную">
+        <span class="brand-mark">
+          <img src="assets/img/brand-mark.svg" alt="Гостиница.нет">
+        </span>
+        <span class="brand-text">
+          <span class="brand-name">Гостиница<span>.нет</span></span>
+          <span class="brand-sub">Бутик-отель · Бронирование</span>
+        </span>
+      </button>
+
+      <nav class="nav-links" id="mainNav" aria-label="Основная навигация">
+        <a data-page="home" class="active">Главная</a>
+        <a data-page="rooms">Номера</a>
+        <a data-page="booking">Бронирование</a>
+        <a data-page="cabinet">Кабинет</a>
+      </nav>
+
+      <div class="nav-actions" id="headerUser"></div>
+    </div>
+  </div>
+</header>
+
+<!-- Мобильная нижняя панель -->
+<nav class="mobile-nav" id="mobileNav" aria-label="Мобильная навигация">
+  <button type="button" data-page="home" class="active">
+    <span data-icon="home"></span>
+    <span>Главная</span>
+  </button>
+  <button type="button" data-page="rooms">
+    <span data-icon="bed"></span>
+    <span>Номера</span>
+  </button>
+  <button type="button" data-page="booking">
+    <span data-icon="cal"></span>
+    <span>Бронь</span>
+  </button>
+  <button type="button" data-page="cabinet">
+    <span data-icon="user"></span>
+    <span>Кабинет</span>
+  </button>
+</nav>
+
+<!-- Кнопка перехода в админ-панель -->
+<button
+  class="admin-fab"
+  id="gearBtn"
+  type="button"
+  onclick="HotelApp.Router.go(HotelApp.Store.get().activePage === 'admin' ? 'home' : 'admin')"
+  title="Панель администратора"
+  aria-label="Панель администратора"
+>
+  <span data-icon="sliders"></span>
+</button>
+
+<main id="mainContent">
+
+  <!-- ==================== ГЛАВНАЯ ==================== -->
+  <section class="page active" id="page-home">
+    <div class="wrap">
+
+      <!-- Кинематографичный Hero -->
+      <div class="hero">
+        <div class="hero-stage">
+          <div class="hero-slides" id="heroSlides"></div>
+          <div class="hero-veil"></div>
+
+          <div class="hero-top">
+            <span class="chip chip-glass">
+              <span data-icon="sparkles"></span>
+              Прямое бронирование 24/7 · без комиссии
+            </span>
+            <div class="hero-rating">
+              <span class="stars-mini">★★★★★</span>
+              <span><b>4.9</b> · 6 категорий номеров</span>
+            </div>
+          </div>
+
+          <div class="hero-bottom">
+            <div>
+              <h1>Номер, в который <em>хочется вернуться</em></h1>
+              <p class="hero-sub">
+                Камерный бутик-отель с реальными фотографиями каждого интерьера, авторским завтраком
+                и мгновенной проверкой свободных дат. Оплата при заселении.
+              </p>
+              <div class="hero-controls">
+                <div class="hero-dots" id="heroDots"></div>
+                <div class="hero-arrows">
+                  <button class="hero-arrow" type="button" onclick="HotelApp.Views.Home.stepHero(-1)" aria-label="Предыдущий слайд">
+                    <span data-icon="arrowLeft"></span>
+                  </button>
+                  <button class="hero-arrow" type="button" onclick="HotelApp.Views.Home.stepHero(1)" aria-label="Следующий слайд">
+                    <span data-icon="arrow"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button class="hero-spotlight" id="heroSpotlight" type="button" title="Открыть описание номера"></button>
+          </div>
+        </div>
+
+        <!-- Плавающая форма поиска и проверки дат -->
+        <form class="search-dock" onsubmit="return HotelApp.Views.Home.onSearchSubmit(event)">
+          <div class="field">
+            <label class="field-label" for="sCheckin">Заезд</label>
+            <input type="date" id="sCheckin" required>
+          </div>
+          <div class="field">
+            <label class="field-label" for="sCheckout">Выезд</label>
+            <input type="date" id="sCheckout" required>
+          </div>
+          <div class="search-nights-pill" id="sNightsPill"></div>
+          <div class="field">
+            <label class="field-label" for="sGuests">Гости</label>
+            <select id="sGuests">
+              <option value="1">1 гость</option>
+              <option value="2" selected>2 гостя</option>
+              <option value="3">3 гостя</option>
+              <option value="4">4 гостя</option>
+            </select>
+          </div>
+          <div class="field field--category">
+            <label class="field-label" for="sType">Категория</label>
+            <select id="sType">
+              <option value="">Любая категория</option>
+            </select>
+          </div>
+          <button class="btn" type="submit">
+            Найти номер
+            <span data-icon="arrow"></span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Принципы отеля -->
+      <section class="section" aria-label="Преимущества отеля">
+        <div class="pillars-grid" id="pillarsGrid"></div>
+      </section>
+
+      <!-- Коллекция номеров (Флагман + Популярные) -->
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Коллекция интерьеров</span>
+            <h2>Избранные номера отеля</h2>
+            <p>От тихого скандинавского стандарта до пентхауса на десятом этаже — каждый номер продуман до деталей.</p>
+          </div>
+          <button class="btn btn-outline" type="button" onclick="HotelApp.Router.go('rooms')">
+            Все 6 категорий
+            <span data-icon="arrow"></span>
+          </button>
+        </div>
+
+        <div id="flagshipSpot"></div>
+        <div class="rooms-grid" id="popularGrid"></div>
+      </section>
+
+      <!-- Тёмная секция гостеприимства -->
+      <section class="section">
+        <div class="privileges-band">
+          <div class="privileges-copy">
+            <span class="eyebrow eyebrow--light">Атмосфера и сервис</span>
+            <h2>Включено в каждое проживание</h2>
+            <p>
+              Мы не берём скрытых доплат за базовый комфорт. Всё, что делает поездку по-настоящему спокойной,
+              уже входит в стоимость вашего номера.
+            </p>
+            <div class="privileges-list" id="privilegesList"></div>
+          </div>
+
+          <div class="privileges-visual">
+            <img src="assets/img/r4.jpg" alt="Историческое крыло отеля">
+            <div class="privileges-caption">
+              <div>
+                <b>Историческое и панорамное крыло</b>
+                <span>Заезд с 14:00 · Выезд до 12:00</span>
+              </div>
+              <button class="btn btn-gold btn-xs" type="button" onclick="HotelApp.RoomModal.open('r4')">Смотреть</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Отзывы гостей -->
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Живые впечатления</span>
+            <h2>Что говорят наши гости</h2>
+            <p>Отзывы реальных постояльцев, привязанные к конкретным номерам отеля.</p>
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" onclick="HotelApp.Router.go('cabinet')">
+            Оставить отзыв
+            <span data-icon="arrow"></span>
+          </button>
+        </div>
+
+        <div class="reviews-bento">
+          <div class="rating-summary-card">
+            <div>
+              <div class="rating-big">
+                <strong id="homeAvgRating">4.9</strong>
+                <span>из 5.0</span>
+              </div>
+              <div class="rating-stars-gold">★★★★★</div>
+              <p id="homeReviewCount" style="margin-top:6px; font-size:13.5px; color:var(--muted);">На основе отзывов гостей</p>
+            </div>
+
+            <div class="rating-bars">
+              <div class="rating-bar-row">
+                <span>Чистота</span>
+                <div class="rating-bar-track"><div class="rating-bar-fill" style="width:100%"></div></div>
+                <b>5.0</b>
+              </div>
+              <div class="rating-bar-row">
+                <span>Сервис</span>
+                <div class="rating-bar-track"><div class="rating-bar-fill" style="width:98%"></div></div>
+                <b>4.9</b>
+              </div>
+              <div class="rating-bar-row">
+                <span>Расположение</span>
+                <div class="rating-bar-track"><div class="rating-bar-fill" style="width:98%"></div></div>
+                <b>4.9</b>
+              </div>
+              <div class="rating-bar-row">
+                <span>Комфорт</span>
+                <div class="rating-bar-track"><div class="rating-bar-fill" style="width:96%"></div></div>
+                <b>4.8</b>
+              </div>
+            </div>
+          </div>
+
+          <div class="reviews-cards-grid" id="homeReviewsGrid"></div>
+        </div>
+      </section>
+
+      <!-- Как проходит бронирование -->
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Простой процесс</span>
+            <h2>От выбора номера до ключей — 4 шага</h2>
+            <p>Никаких долгих звонков и сложных форм: всё прозрачно и работает 24 часа в сутки.</p>
+          </div>
+        </div>
+
+        <div class="timeline" id="stepsGrid"></div>
+
+        <div class="cta-banner">
+          <div>
+            <h3>Готовы спланировать поездку?</h3>
+            <p>Проверьте доступность свободных номеров на ваши даты и закрепите лучшую цену без предоплаты.</p>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-dark" type="button" onclick="HotelApp.Router.go('rooms')">Выбрать номер</button>
+            <button class="btn" type="button" onclick="HotelApp.Router.go('booking')">
+              Забронировать сейчас
+              <span data-icon="arrow"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+  <!-- ==================== КАТАЛОГ НОМЕРОВ ==================== -->
+  <section class="page" id="page-rooms">
+    <div class="wrap">
+      <div class="page-head">
+        <div class="page-head-copy">
+          <span class="eyebrow">Номерной фонд</span>
+          <h1>Номера отеля</h1>
+          <p>
+            Всего <strong id="roomsCountLabel">6 категорий</strong> — от светлого «Стандарта» до президентского люкса.
+            Укажите даты поездки, чтобы увидеть актуальную доступность и точную стоимость проживания.
+          </p>
+        </div>
+        <div style="font-size:13.5px; font-weight:700; color:var(--brand);" id="catalogStatusLine"></div>
+      </div>
+
+      <!-- Панель проверки дат и поиска -->
+      <form class="catalog-dates-bar" onsubmit="return HotelApp.Views.Catalog.applyDateBar(event)">
+        <div class="field">
+          <label class="field-label" for="catCheckin">Заезд</label>
+          <input type="date" id="catCheckin" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="catCheckout">Выезд</label>
+          <input type="date" id="catCheckout" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="catGuests">Гостей</label>
+          <select id="catGuests" onchange="HotelApp.Views.Catalog.applyDateBar()">
+            <option value="1">От 1 гостя</option>
+            <option value="2">От 2 гостей</option>
+            <option value="3">От 3 гостей</option>
+            <option value="4">4 гостя</option>
+          </select>
+        </div>
+        <div class="field field--search">
+          <label class="field-label" for="catQuery">Поиск по удобствам или названию</label>
+          <input
+            type="search"
+            id="catQuery"
+            placeholder="Панорама, ванна, мини-кухня, люкс..."
+            oninput="HotelApp.Views.Catalog.onSearchInput(this.value)"
+          >
+        </div>
+        <button class="btn btn-sm" type="submit" style="height:46px;">Проверить даты</button>
+      </form>
+
+      <!-- Фильтры и сортировка -->
+      <div class="toolbar">
+        <div id="catalogFilterChips" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+        <div class="spacer"></div>
+        <select id="sortRooms" onchange="HotelApp.Views.Catalog.setSort(this.value)" aria-label="Сортировка номеров">
+          <option value="pop">Сначала популярные</option>
+          <option value="cheap">Сначала дешёвые</option>
+          <option value="expensive">Сначала дорогие</option>
+          <option value="size">По площади</option>
+        </select>
+      </div>
+
+      <div class="rooms-grid" id="hallsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ==================== БРОНИРОВАНИЕ ==================== -->
+  <section class="page" id="page-booking">
+    <div class="wrap">
+      <div class="page-head">
+        <div class="page-head-copy">
+          <span class="eyebrow">Оформление заявки</span>
+          <h1>Забронировать номер</h1>
+          <p>Выберите даты, добавьте нужные опции и оставьте контакты — номер закрепится за вами сразу после отправки.</p>
+        </div>
+        <div class="booking-progress">
+          <span class="bp-item"><span>1</span> Номер и даты</span>
+          <span class="bp-item"><span>2</span> Опции</span>
+          <span class="bp-item"><span>3</span> Ваучер</span>
+        </div>
+      </div>
+
+      <div class="booking-layout">
+        <div class="panel">
+          <form id="bookingForm" onsubmit="return HotelApp.Views.Booking.onSubmit(event)">
+            <div class="form-section-title">
+              <span>1. Параметры проживания</span>
+            </div>
+
+            <div class="form-grid">
+              <div class="field col-2">
+                <label class="field-label" for="bkHall">Номер *</label>
+                <select id="bkHall" required></select>
+              </div>
+              <div class="field">
+                <label class="field-label" for="bkCheckin">Дата заезда *</label>
+                <input type="date" id="bkCheckin" required>
+              </div>
+              <div class="field">
+                <label class="field-label" for="bkCheckout">Дата выезда *</label>
+                <input type="date" id="bkCheckout" required>
+              </div>
+              <div class="field col-2">
+                <label class="field-label" for="bkGuests">Количество гостей *</label>
+                <select id="bkGuests" required></select>
+              </div>
+            </div>
+
+            <div id="bkConflictSlot"></div>
+
+            <div class="form-section-title">
+              <span>2. Дополнительные опции</span>
+              <span style="font-size:12px; font-weight:600; color:var(--muted); text-transform:none; letter-spacing:0;">По желанию</span>
+            </div>
+
+            <div class="extras-grid" id="bkExtrasGrid"></div>
+
+            <div class="form-section-title">
+              <span>3. Контактные данные гостя</span>
+              <button
+                class="link-btn"
+                id="bkExistingLoginLink"
+                type="button"
+                onclick="HotelApp.AuthModal.open('login', 'default', () => HotelApp.Views.Booking.syncAuthUI())"
+              >
+                Уже есть аккаунт? Войти
+              </button>
+            </div>
+
+            <div class="note note--brand" id="bkAuthBanner" style="display:none; margin-bottom:16px;"></div>
+
+            <div class="form-grid">
+              <div class="field col-2">
+                <label class="field-label" for="bkName">Имя и фамилия гостя *</label>
+                <input type="text" id="bkName" placeholder="Мария Петрова" required autocomplete="name">
+              </div>
+              <div class="field">
+                <label class="field-label" for="bkPhone">Телефон *</label>
+                <input type="tel" id="bkPhone" placeholder="+7 (916) 550-11-22" required autocomplete="tel">
+              </div>
+              <div class="field">
+                <label class="field-label" for="bkEmail">E-mail (для подтверждения)</label>
+                <input type="email" id="bkEmail" placeholder="maria@mail.ru" autocomplete="email">
+              </div>
+              <div class="field col-2" id="bkPassWrap">
+                <label class="field-label" for="bkPass">
+                  <span>Пароль для личного кабинета *</span>
+                  <span class="field-hint">Минимум 4 символа — чтобы отслеживать бронь</span>
+                </label>
+                <input type="password" id="bkPass" placeholder="Придумайте пароль" minlength="4" autocomplete="new-password">
+              </div>
+              <div class="field col-2">
+                <label class="field-label" for="bkComment">Пожелания к заселению</label>
+                <textarea id="bkComment" rows="3" placeholder="Ранний заезд, номер повыше, гипоаллергенные подушки..."></textarea>
+              </div>
+              <div class="col-2 note">
+                <span data-icon="clock"></span>
+                <span>Бесплатная отмена за 24 часа до заезда. Оплата в отеле — картой или наличными при заселении.</span>
+              </div>
+            </div>
+
+            <button class="btn btn-block" id="btnSubmitBooking" type="submit" style="margin-top:20px;">
+              Подтвердить и получить ваучер
+              <span data-icon="arrow"></span>
+            </button>
+            <div class="msg" id="bkMsg"></div>
+          </form>
+        </div>
+
+        <!-- Липкая карточка расчёта -->
+        <aside class="summary">
+          <div class="summary-card">
+            <div class="summary-img" id="sumImg"></div>
+            <div class="summary-body" id="sumBody"></div>
+          </div>
+          <div class="note">
+            <span data-icon="lock"></span>
+            <span>Номер закрепляется сразу после отправки заявки и проверяется на пересечение дат автоматически.</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ЛИЧНЫЙ КАБИНЕТ ==================== -->
+  <section class="page" id="page-cabinet">
+    <div class="wrap">
+      <div class="page-head">
+        <div class="page-head-copy">
+          <span class="eyebrow">Личный кабинет</span>
+          <h1>Мои бронирования и отзывы</h1>
+          <p>Отслеживайте статус заявок, печатайте электронные ваучеры и делитесь впечатлениями о номерах.</p>
+        </div>
+      </div>
+
+      <!-- Состояние для гостя -->
+      <div id="cabGuestState" style="display:none;">
+        <div class="empty" style="max-width:560px; margin:12px auto 0; padding:52px 28px;">
+          <div class="ico"><span data-icon="user"></span></div>
+          <b>Войдите в личный кабинет гостя</b>
+          <p>Здесь хранятся все ваши брони, статусы подтверждения, электронные ваучеры и опубликованные отзывы.</p>
+          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn-sm" type="button" onclick="HotelApp.AuthModal.open('login', 'cabinet')">Войти</button>
+            <button class="btn btn-outline btn-sm" type="button" onclick="HotelApp.AuthModal.open('register', 'cabinet')">Создать аккаунт</button>
+            <button class="btn btn-gold btn-sm" id="cabDemoBtn" type="button" onclick="HotelApp.AuthModal.demoLogin()">
+              Демо-вход (Мария Петрова)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Состояние для авторизованного гостя -->
+      <div id="cabUserState" style="display:none;">
+        <div class="cabinet-head">
+          <div class="cabinet-avatar" id="cabAvatar">М</div>
+          <div class="cabinet-user-info">
+            <h2 id="cabName">Гость</h2>
+            <div class="login" id="cabLogin">@guest</div>
+          </div>
+          <div class="cabinet-head-actions">
+            <button class="btn btn-sm" type="button" onclick="HotelApp.Router.go('booking')">Новая бронь</button>
+            <button class="btn btn-outline btn-sm" type="button" onclick="HotelApp.Auth.logout()">Выйти</button>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat accent"><div class="num" id="statBookings">0</div><div class="lbl">Всего броней</div></div>
+          <div class="stat"><div class="num" id="statNights">0</div><div class="lbl">Ночей в отеле</div></div>
+          <div class="stat"><div class="num" id="statConfirmed">0</div><div class="lbl">Подтверждено</div></div>
+          <div class="stat"><div class="num" id="statReviews">0</div><div class="lbl">Моих отзывов</div></div>
+        </div>
+
+        <div class="tabs" id="cabinetTabs">
+          <button type="button" class="active" data-tab="bookings" onclick="HotelApp.Views.Cabinet.switchTab('bookings')">Мои брони</button>
+          <button type="button" data-tab="reviews" onclick="HotelApp.Views.Cabinet.switchTab('reviews')">Мои отзывы</button>
+          <button type="button" data-tab="newReview" onclick="HotelApp.Views.Cabinet.switchTab('newReview')">Оставить отзыв</button>
+        </div>
+
+        <div class="tab-panel active" id="panel-bookings">
+          <div class="list" id="bookingsList"></div>
+        </div>
+
+        <div class="tab-panel" id="panel-reviews">
+          <div class="list" id="reviewsList"></div>
+        </div>
+
+        <div class="tab-panel" id="panel-newReview">
+          <div class="panel" style="max-width:680px;">
+            <div class="panel-head">
+              <h3>Отзыв о проживании</h3>
+              <p>Ваш отзыв появится в карточке выбранного номера и поможет другим гостям.</p>
+            </div>
+            <form onsubmit="return HotelApp.Views.Cabinet.submitReview(event)">
+              <div class="field">
+                <label class="field-label" for="rvHall">Номер</label>
+                <select id="rvHall"></select>
+              </div>
+              <div class="field" style="margin-top:16px;">
+                <span class="field-label">Оценка</span>
+                <div class="stars-wrap">
+                  <div class="stars" id="starsInput">
+                    <button type="button" data-v="1" aria-label="1 звезда">☆</button>
+                    <button type="button" data-v="2" aria-label="2 звезды">☆</button>
+                    <button type="button" data-v="3" aria-label="3 звезды">☆</button>
+                    <button type="button" data-v="4" aria-label="4 звезды">☆</button>
+                    <button type="button" data-v="5" aria-label="5 звёзд">☆</button>
+                  </div>
+                  <span class="stars-caption" id="starsCaption">Выберите оценку</span>
+                </div>
+              </div>
+              <div class="field" style="margin-top:16px;">
+                <label class="field-label" for="rvText">
+                  <span>Текст отзыва</span>
+                  <span class="field-hint" id="rvCharCount">Минимум 10 символов</span>
+                </label>
+                <textarea id="rvText" rows="4" placeholder="Что особенно понравилось в номере, завтраке и сервисе..."></textarea>
+              </div>
+              <button class="btn" type="submit" style="margin-top:18px;">Опубликовать отзыв</button>
+              <div class="msg" id="rvMsg"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== АДМИН-ПАНЕЛЬ (PMS) ==================== -->
+  <section class="page" id="page-admin">
+    <div class="wrap">
+      <!-- Авторизация администратора -->
+      <div class="admin-login-box" id="adminLoginCard">
+        <span class="eyebrow">Служебный вход</span>
+        <h2>Панель администратора</h2>
+        <p>Управление заявками гостей, статусами бронирований и номерным фондом отеля.</p>
+
+        <form onsubmit="return HotelApp.Views.Admin.login(event)" style="display:grid; gap:14px;">
+          <div class="field">
+            <label class="field-label" for="adminUser">Логин администратора</label>
+            <input type="text" id="adminUser" placeholder="Admin26" required>
+          </div>
+          <div class="field">
+            <label class="field-label" for="adminPass">Пароль</label>
+            <input type="password" id="adminPass" placeholder="••••••" required>
+          </div>
+          <button class="btn btn-block" type="submit">Войти в систему управления</button>
+          <div class="msg" id="adminMsg"></div>
+        </form>
+
+        <div class="admin-hint-card">
+          <span>Демо-доступ: <b>Admin26</b> / <b>Demo26</b></span>
+          <button class="link-btn" type="button" onclick="HotelApp.Views.Admin.fillDemoCredentials()">Заполнить</button>
+        </div>
+
+        <div style="text-align:center; margin-top:18px;">
+          <button class="link-btn" type="button" onclick="HotelApp.Router.go('home')">← Вернуться на сайт отеля</button>
+        </div>
+      </div>
+
+      <!-- Рабочая панель администратора -->
+      <div id="adminPanel" style="display:none; padding-top:32px;">
+        <div class="admin-head">
+          <div>
+            <span class="eyebrow eyebrow--light" style="margin-bottom:8px;">Hotel PMS Dashboard</span>
+            <h2>Управление бронями</h2>
+            <p>Заявки гостей, статусы оплаты, загрузка номерного фонда и отзывы.</p>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-glass btn-sm" type="button" onclick="HotelApp.Router.go('home')">← На сайт</button>
+            <button class="btn btn-gold btn-sm" type="button" onclick="HotelApp.Views.Admin.logout()">Выйти</button>
+          </div>
+        </div>
+
+        <div class="admin-kpi-grid" id="adminStats"></div>
+
+        <div class="tabs" id="adminSubtabs">
+          <button type="button" class="active" data-tab="bookings" onclick="HotelApp.Views.Admin.switchSubtab('bookings')">Заявки на бронь</button>
+          <button type="button" data-tab="rooms" onclick="HotelApp.Views.Admin.switchSubtab('rooms')">Номерной фонд</button>
+          <button type="button" data-tab="reviews" onclick="HotelApp.Views.Admin.switchSubtab('reviews')">Отзывы гостей</button>
+        </div>
+
+        <div class="tab-panel active" id="admin-tab-bookings">
+          <div class="admin-toolbar">
+            <div class="admin-filters" id="adminStatusFilters"></div>
+            <input
+              type="search"
+              class="admin-search"
+              placeholder="Поиск по гостю, телефону, номеру, #GN..."
+              oninput="HotelApp.Views.Admin.setSearchQuery(this.value)"
+            >
+          </div>
+          <div class="list" id="adminBookingsList"></div>
+        </div>
+
+        <div class="tab-panel" id="admin-tab-rooms">
+          <div class="inventory-grid" id="adminInventoryGrid"></div>
+        </div>
+
+        <div class="tab-panel" id="admin-tab-reviews">
+          <div class="list" id="adminReviewsList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ==================== ПОДВАЛ ==================== -->
+<footer class="footer" id="siteFooter">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="cursor:pointer;" onclick="HotelApp.Router.go('home')">
+          <span class="brand-mark">
+            <img src="assets/img/brand-mark.svg" alt="Гостиница.нет">
+          </span>
+          <span class="brand-text">
+            <span class="brand-name">Гостиница<span>.нет</span></span>
+            <span class="brand-sub">Бутик-отель · Бронирование</span>
+          </span>
+        </div>
+        <p class="footer-about">
+          Онлайн-сервис прямого бронирования номеров: реальные фотографии, проверка свободных дат,
+          электронный ваучер и честная цена без комиссий посредников.
+        </p>
+        <div class="footer-meta-badges">
+          <span class="mode-pill" id="footerModeBadge">Интерактивный прототип</span>
+        </div>
+      </div>
+
+      <div>
+        <h4>Навигация</h4>
+        <ul>
+          <li><button type="button" onclick="HotelApp.Router.go('home')">Главная</button></li>
+          <li><button type="button" onclick="HotelApp.Router.go('rooms')">Номера отеля</button></li>
+          <li><button type="button" onclick="HotelApp.Router.go('booking')">Бронирование</button></li>
+          <li><button type="button" onclick="HotelApp.Router.go('cabinet')">Личный кабинет</button></li>
+          <li><button type="button" onclick="HotelApp.Router.go('admin')">Панель администратора</button></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Контакты</h4>
+        <ul>
+          <li>+7 (800) 555-35-35</li>
+          <li>hello@gostinitsa.net</li>
+          <li>Ресепшен и консьерж 24/7</li>
+          <li>Заезд 14:00 · Выезд 12:00</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Мы на связи</h4>
+        <ul>
+          <li><a href="https://t.me/yermak3" target="_blank" rel="noopener">Telegram</a></li>
+          <li><a href="https://vk.ru/yermak3" target="_blank" rel="noopener">VK</a></li>
+          <li><a href="https://max.ru/u/f9LHodD0cOJTSQKzHuC7faZGhciVkV5yKxoXcf3eEvFI1beVrFPY9S3tkEc" target="_blank" rel="noopener">Max</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Гостиница.нет — сервис онлайн-бронирования номеров</span>
+      <span>Курсовой проект · PHP / MySQL &amp; Modular Frontend</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Плавающий док сравнения номеров -->
+<div class="compare-dock" id="compareDock" aria-live="polite"></div>
+
+<!-- Стек уведомлений (Toasts) -->
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+<!-- ==================== МОДАЛЬНОЕ ОКНО ДЕТАЛЕЙ НОМЕРА ==================== -->
+<div class="modal" id="roomModal" role="dialog" aria-modal="true" aria-label="Описание номера">
+  <div class="modal-overlay" onclick="HotelApp.RoomModal.close()"></div>
+  <div class="modal-card modal-card--lg">
+    <button class="modal-close" type="button" onclick="HotelApp.RoomModal.close()" aria-label="Закрыть">&times;</button>
+    <div id="roomModalBody"></div>
+  </div>
+</div>
+
+<!-- ==================== МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ ==================== -->
+<div class="modal" id="authModal" role="dialog" aria-modal="true" aria-label="Вход и регистрация">
+  <div class="modal-overlay" onclick="HotelApp.AuthModal.close()"></div>
+  <div class="modal-card modal-card--sm">
+    <button class="modal-close" type="button" onclick="HotelApp.AuthModal.close()" aria-label="Закрыть">&times;</button>
+
+    <div class="auth-brand">
+      <span class="brand-mark" style="width:40px; height:40px;">
+        <img src="assets/img/brand-mark.svg" alt="Гостиница.нет">
+      </span>
+      <span class="brand-text">
+        <span class="brand-name" style="font-size:22px;">Гостиница<span>.нет</span></span>
+        <span class="brand-sub">Личный кабинет гостя</span>
+      </span>
+    </div>
+
+    <div id="authModalBadge" class="chip" style="display:none; margin-bottom:14px;"></div>
+
+    <div class="auth-tabs">
+      <button type="button" id="modalTabLogin" class="active" onclick="HotelApp.AuthModal.switchTab('login')">Вход</button>
+      <button type="button" id="modalTabRegister" onclick="HotelApp.AuthModal.switchTab('register')">Регистрация</button>
+    </div>
+
+    <div class="auth-screen active" id="modal-screen-login">
+      <h3>С возвращением</h3>
+      <p class="sub" id="loginModalSub">Войдите, чтобы управлять бронями и отзывами.</p>
+      <form onsubmit="return HotelApp.AuthModal.handleLogin(event)">
+        <div class="field">
+          <label class="field-label" for="loginUser">Логин или телефон</label>
+          <input type="text" id="loginUser" placeholder="maria" required autocomplete="username">
+        </div>
+        <div class="field">
+          <label class="field-label" for="loginPass">Пароль</label>
+          <input type="password" id="loginPass" placeholder="••••••" required autocomplete="current-password">
+        </div>
+        <button class="btn btn-block" id="btnDoLogin" type="submit">Войти</button>
+        <div class="msg" id="loginMsg"></div>
+      </form>
+    </div>
+
+    <div class="auth-screen" id="modal-screen-register">
+      <h3>Создать аккаунт</h3>
+      <p class="sub" id="regModalSub">Минута — и история всех поездок всегда под рукой.</p>
+      <form onsubmit="return HotelApp.AuthModal.handleRegister(event)">
+        <div class="field">
+          <label class="field-label" for="regUser">Логин</label>
+          <input type="text" id="regUser" placeholder="ivan" required minlength="3">
+        </div>
+        <div class="field">
+          <label class="field-label" for="regName">Ваше имя</label>
+          <input type="text" id="regName" placeholder="Иван Иванов" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="regPhone">Телефон</label>
+          <input type="tel" id="regPhone" placeholder="+7 (999) 123-45-67">
+        </div>
+        <div class="field">
+          <label class="field-label" for="regPass">Пароль</label>
+          <input type="password" id="regPass" placeholder="Минимум 4 символа" required minlength="4">
+        </div>
+        <button class="btn btn-block" id="btnDoRegister" type="submit">Зарегистрироваться</button>
+        <div class="msg" id="regMsg"></div>
+      </form>
+    </div>
+
+    <div class="demo-access-box" id="authDemoBox">
+      <p>Быстрый просмотр кабинета с готовыми бронями и отзывами:</p>
+      <button class="btn btn-gold btn-sm btn-block" type="button" onclick="HotelApp.AuthModal.demoLogin()">
+        Войти как Мария Петрова (демо)
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== МОДАЛЬНОЕ ОКНО ВАУЧЕРА ==================== -->
+<div class="modal" id="voucherModal" role="dialog" aria-modal="true" aria-label="Ваучер бронирования">
+  <div class="modal-overlay" onclick="HotelApp.VoucherModal.close()"></div>
+  <div class="modal-card modal-card--md">
+    <button class="modal-close" type="button" onclick="HotelApp.VoucherModal.close()" aria-label="Закрыть">&times;</button>
+    <div id="voucherModalBody"></div>
+  </div>
+</div>
+
+<!-- ==================== МОДАЛЬНОЕ ОКНО СРАВНЕНИЯ НОМЕРОВ ==================== -->
+<div class="modal" id="compareModal" role="dialog" aria-modal="true" aria-label="Сравнение номеров">
+  <div class="modal-overlay" onclick="HotelApp.CompareModal.close()"></div>
+  <div class="modal-card modal-card--xl">
+    <button class="modal-close" type="button" onclick="HotelApp.CompareModal.close()" aria-label="Закрыть">&times;</button>
+    <div id="compareModalBody"></div>
+  </div>
+</div>
+
+<!-- ==================== ДИАЛОГ ПОДТВЕРЖДЕНИЯ ==================== -->
+<div class="modal" id="confirmModal" role="dialog" aria-modal="true" aria-label="Подтверждение действия">
+  <div class="modal-overlay" onclick="HotelApp.Toast.resolveConfirm(false)"></div>
+  <div class="modal-card modal-card--sm confirm-card">
+    <h3 id="confirmTitle">Подтвердите действие</h3>
+    <p id="confirmText"></p>
+    <div class="confirm-actions">
+      <button class="btn btn-outline btn-sm" type="button" onclick="HotelApp.Toast.resolveConfirm(false)">Отмена</button>
+      <button class="btn btn-sm" id="confirmOkBtn" type="button" onclick="HotelApp.Toast.resolveConfirm(true)">Подтвердить</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модульные скрипты приложения (без сборщика, работают в PHP, HTTP и file://) -->
+<script defer src="assets/js/data/rooms-fallback.js"></script>
+<script defer src="assets/js/utils/format.js"></script>
+<script defer src="assets/js/utils/icons.js"></script>
+<script defer src="assets/js/state/store.js"></script>
+<script defer src="assets/js/services/mock-api.js"></script>
+<script defer src="assets/js/services/api.js"></script>
+<script defer src="assets/js/ui/toast.js"></script>
+<script defer src="assets/js/ui/auth-modal.js"></script>
+<script defer src="assets/js/ui/room-modal.js"></script>
+<script defer src="assets/js/ui/voucher-modal.js"></script>
+<script defer src="assets/js/ui/compare-modal.js"></script>
+<script defer src="assets/js/views/catalog.js"></script>
+<script defer src="assets/js/views/home.js"></script>
+<script defer src="assets/js/views/booking.js"></script>
+<script defer src="assets/js/views/cabinet.js"></script>
+<script defer src="assets/js/views/admin.js"></script>
+<script defer src="assets/js/app.js"></script>
+</body>
+</html>

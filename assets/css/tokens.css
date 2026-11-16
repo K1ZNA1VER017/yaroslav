@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Гостиница.нет — Design System Tokens
+   Aesthetic: Modern Quiet-Luxury Boutique Hospitality
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --bg-canvas:         #f6f3ec;
+  --bg-subtle:         #ede8dd;
+  --bg-surface:        #ffffff;
+  --bg-input:          #faf8f4;
+  --bg-dark:           #0f1f1b;
+  --bg-dark-2:         #162c26;
+  --bg-dark-3:         #1d3830;
+
+  /* Ink */
+  --ink:               #171512;
+  --ink-2:             #4f483f;
+  --muted:             #81786d;
+  --ink-inverse:       #f8f6f1;
+  --ink-inverse-muted: rgba(248, 246, 241, 0.72);
+
+  /* Lines & Borders */
+  --line:              rgba(23, 21, 18, 0.10);
+  --line-strong:       rgba(23, 21, 18, 0.18);
+  --line-inverse:      rgba(255, 255, 255, 0.14);
+
+  /* Brand Palette: Botanical Emerald & Brushed Brass */
+  --brand:             #124538;
+  --brand-2:           #1a5c4b;
+  --brand-deep:        #0b3027;
+  --brand-soft:        #e4efe9;
+  --brand-ring:        rgba(18, 69, 56, 0.14);
+
+  --gold:              #bd9247;
+  --gold-light:        #e2c27e;
+  --gold-deep:         #876322;
+  --gold-soft:         #f7efe0;
+
+  /* Semantic Statuses */
+  --danger:            #a82c2b;
+  --danger-soft:       #fbeaea;
+  --success:           #15614a;
+  --success-soft:      #e3f2ec;
+  --warn:              #996815;
+  --warn-soft:         #fdf3dc;
+  --info:              #1e4f8f;
+  --info-soft:         #e6effb;
+
+  /* Typography */
+  --font-sans:         'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif:        'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+
+  /* Radii */
+  --radius-xs:         8px;
+  --radius-sm:         12px;
+  --radius-md:         18px;
+  --radius-lg:         26px;
+  --radius-xl:         32px;
+  --radius-pill:       999px;
+
+  /* Elevation */
+  --shadow-xs:         0 1px 2px rgba(23, 21, 18, 0.04);
+  --shadow-sm:         0 2px 6px rgba(23, 21, 18, 0.04), 0 10px 26px rgba(23, 21, 18, 0.06);
+  --shadow-md:         0 8px 24px rgba(23, 21, 18, 0.08), 0 22px 48px rgba(23, 21, 18, 0.08);
+  --shadow-lg:         0 24px 64px rgba(15, 31, 27, 0.18);
+  --shadow-dark:       0 24px 64px rgba(8, 17, 15, 0.38);
+
+  /* Motion */
+  --ease-out:          cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring:       cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-fast:            160ms;
+  --t-base:            260ms;
+  --t-slow:            460ms;
+
+  /* Layout */
+  --container:         1240px;
+  --header-h:          78px;
+  --mobile-nav-h:      70px;
+}

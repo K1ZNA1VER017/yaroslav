@@ -1,0 +1,282 @@
+/* ==========================================================================
+   Responsive Breakpoints & Print Styles for Booking Voucher
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .search-dock {
+    width: calc(100% - 28px);
+    grid-template-columns: 1fr 1fr auto 1fr;
+  }
+  .search-dock .field--category {
+    grid-column: span 2;
+  }
+  .search-dock .btn {
+    grid-column: span 2;
+  }
+
+  .pillars-grid,
+  .timeline {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rooms-grid,
+  .inventory-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .privileges-band {
+    grid-template-columns: 1fr;
+    padding: 36px;
+  }
+
+  .privileges-visual {
+    aspect-ratio: 16 / 9;
+  }
+
+  .reviews-bento {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-dates-bar {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .catalog-dates-bar .field--search {
+    grid-column: span 2;
+  }
+
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .summary {
+    position: static;
+  }
+
+  .admin-kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 820px) {
+  .wrap {
+    padding: 0 18px;
+  }
+
+  main {
+    padding-bottom: calc(var(--mobile-nav-h) + 46px);
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-nav {
+    display: grid;
+  }
+
+  .admin-fab {
+    bottom: calc(var(--mobile-nav-h) + 22px);
+    right: 16px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .toast-stack {
+    right: 14px;
+    left: 14px;
+    bottom: calc(var(--mobile-nav-h) + 22px);
+    max-width: none;
+  }
+
+  .compare-dock {
+    bottom: calc(var(--mobile-nav-h) + 20px);
+    width: calc(100% - 28px);
+    justify-content: space-between;
+  }
+
+  .hero-stage {
+    min-height: 490px;
+    border-radius: 24px;
+  }
+
+  .hero-top {
+    padding: 20px 22px 0;
+  }
+
+  .hero-bottom {
+    padding: 28px 22px 34px;
+    grid-template-columns: 1fr;
+  }
+
+  .hero-spotlight {
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .search-dock {
+    margin: 14px 0 0;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    padding: 16px;
+  }
+
+  .search-nights-pill,
+  .search-dock .field--category,
+  .search-dock .btn {
+    grid-column: span 2;
+  }
+
+  .flagship-card {
+    grid-template-columns: 1fr;
+  }
+
+  .flagship-media {
+    min-height: 240px;
+  }
+
+  .flagship-body {
+    padding: 24px 22px;
+  }
+
+  .rooms-grid,
+  .reviews-cards-grid,
+  .inventory-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-dates-bar {
+    grid-template-columns: 1fr 1fr;
+  }
+  .catalog-dates-bar .field--search,
+  .catalog-dates-bar .btn {
+    grid-column: span 2;
+  }
+
+  .form-grid,
+  .extras-grid {
+    grid-template-columns: 1fr;
+  }
+  .col-2 {
+    grid-column: span 1;
+  }
+
+  .stat-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .booking-item {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .booking-actions {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .stepper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .room-modal-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .room-modal-side {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .room-modal-features,
+  .room-modal-specs-grid,
+  .voucher-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer {
+    padding-bottom: calc(var(--mobile-nav-h) + 38px);
+  }
+}
+
+@media (max-width: 540px) {
+  .brand-sub {
+    display: none;
+  }
+
+  .nav-user-name {
+    display: none;
+  }
+
+  .pillars-grid,
+  .timeline,
+  .privileges-list,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .privileges-band {
+    padding: 26px 20px;
+    border-radius: 24px;
+  }
+
+  .cta-banner {
+    padding: 26px 22px;
+  }
+
+  .panel {
+    padding: 20px 18px;
+  }
+
+  .modal {
+    padding: 10px;
+  }
+
+  .modal-card--sm,
+  .modal-card--md,
+  .modal-card--xl {
+    padding: 22px 18px;
+  }
+}
+
+/* ==================== PRINTABLE BOOKING VOUCHER ==================== */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #voucherModal,
+  #voucherModal * {
+    visibility: visible !important;
+  }
+  #voucherModal {
+    position: fixed !important;
+    inset: 0 !important;
+    display: block !important;
+    padding: 0 !important;
+  }
+  #voucherModal .modal-overlay,
+  #voucherModal .modal-close,
+  #voucherModal .voucher-actions {
+    display: none !important;
+  }
+  #voucherModal .modal-card {
+    box-shadow: none !important;
+    border: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+    padding: 0 !important;
+  }
+}
